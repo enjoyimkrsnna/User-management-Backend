@@ -232,11 +232,3 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
 ## Environment Variables
 
 - `JWT_SECRET`: The secret key used for signing JWT tokens. Generated using the provided script.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-This `README.md` provides a complete guide to setting up and using your CRUD application with JWT authentication.
