@@ -1,6 +1,6 @@
-# CRUD Application with JWT Authentication
+# CRUD Application with JWT Authentication with Docker
 
-This project is a CRUD application built using Node.js, Express, and MongoDB, with JWT authentication to secure user-related endpoints.
+This project is a CRUD application built using Node.js, Express, and MongoDB, with JWT authentication to secure user-related endpoints. Docker is used to containerize the application for easy deployment.
 
 ## Project Structure
 
@@ -28,6 +28,8 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
 - **`app.js`**: Entry point for the application. Sets up and starts the server.
 
 ## Installation
+
+### Running Locally
 
 1. **Clone the Repository:**
 
@@ -85,6 +87,84 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
 
    The application will be accessible at `http://localhost:3000`.
 
+### Using Docker
+
+1. **Build and Run with Docker Compose:**
+
+   Ensure you have Docker and Docker Compose installed. Navigate to the project directory and build the Docker image using:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+   This command builds the Docker image and starts the application along with MongoDB.
+
+2. **Access the Application:**
+
+   Once the containers are running, the application will be accessible at `http://localhost:3000`.
+
+3. **Stopping the Containers:**
+
+   To stop the running containers, use:
+
+   ```bash
+   docker-compose down
+   ```
+
+## Docker Configuration
+
+**`docker-compose.yml`**
+
+```yaml
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - MONGO_URI=mongodb://mongo:27017/CrudDB
+    networks:
+      - my-network
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - my-network
+
+volumes:
+  mongo_data:
+
+networks:
+  my-network:
+```
+
+**`Dockerfile`**
+
+```Dockerfile
+FROM node:14
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+```
+
 ## Usage
 
 - **Base URL:** `http://localhost:3000/api/v1`
@@ -129,8 +209,10 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
 
    **Response:**
 
-   ```
-   your_jwt_token_here
+   ```json
+   {
+     "token": "your_jwt_token_here"
+   }
    ```
 
    Use the returned token for authenticating requests to protected routes.

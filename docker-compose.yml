@@ -1,0 +1,28 @@
+version: '3'
+services:
+  app:
+    image: imkrsnna/user-management:1.0.6  # Use the pre-built image
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - MONGO_URI=mongodb://mongo:27017/CrudDB
+    networks:
+      - my-network
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - my-network
+
+volumes:
+  mongo_data:
+
+networks:
+  my-network:
