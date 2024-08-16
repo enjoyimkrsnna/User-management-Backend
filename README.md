@@ -1,4 +1,4 @@
-# CRUD Application with JWT Authentication with Docker
+# CRUD Application with JWT Authentication and Docker
 
 This project is a CRUD application built using Node.js, Express, and MongoDB, with JWT authentication to secure user-related endpoints. Docker is used to containerize the application for easy deployment.
 
