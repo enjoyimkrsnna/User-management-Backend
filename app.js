@@ -1,6 +1,8 @@
+require('dotenv').config();
 const express = require("express")
 const mongoose = require("mongoose")
 const url = 'mongodb://127.0.0.1:27017/CrudDB';
+const authRoute = require("./Routes/auth.route"); 
 
 const userRoute = require("./Routes/user.route")
 const app = express();
@@ -9,7 +11,9 @@ const app = express();
 app.use(express.json());
 
 //routes
+app.use("/api/v1/auth", authRoute); 
 app.use("/api/v1/users",userRoute);
+
 
 
 mongoose.connect(url)

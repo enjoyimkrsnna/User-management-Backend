@@ -1,6 +1,9 @@
 # Node modules
 /node_modules/
 
+cryptographic.js
+.env
+
 # IDE and editor folders
 .idea/
 .vscode/
