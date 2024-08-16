@@ -38,7 +38,7 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
 2. **Navigate to the Project Directory:**
 
    ```bash
-   cd your-repo-name
+   cd User-management-Backend
    ```
 
 3. **Install Dependencies:**
