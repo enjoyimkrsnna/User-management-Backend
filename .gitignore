@@ -1,8 +1,8 @@
 # Node modules
 /node_modules/
 
-cryptographic.js
 .env
+/config/
 
 # IDE and editor folders
 .idea/

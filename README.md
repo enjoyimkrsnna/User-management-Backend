@@ -1,113 +1,240 @@
-# User Management API 
+# CRUD Application with JWT Authentication
 
-## Overview
+This project is a CRUD application built using Node.js, Express, and MongoDB, with JWT authentication to secure user-related endpoints.
 
-The **User Management Backend** is a RESTful API built using Node.js and MongoDB that provides functionality for managing user data. This backend service supports creating, reading, updating, and deleting user records.
+## Project Structure
 
-## Features
+- **`/Controllers`**: Contains the logic for handling requests and responses.
+  - `auth.controller.js`: Handles user signup and login.
+  - `user.controller.js`: Manages CRUD operations for users.
 
-- **CRUD Operations**: Perform create, read, update, and delete operations on user records.
-- **User Authentication**: Manage user credentials and basic profile information.
-- **Data Storage**: Utilizes MongoDB for data storage and retrieval.
+- **`/Middleware`**: Contains middleware functions.
+  - `auth.middleware.js`: Middleware to authenticate requests using JWT.
 
-## Technology Stack
+- **`/Models`**: Contains Mongoose models for database schemas.
+  - `user.models.js`: Defines the User schema and methods.
 
-- **Backend**: Node.js with Express.js
-- **Database**: MongoDB
-- **ORM**: Mongoose
+- **`/Routes`**: Contains route definitions.
+  - `auth.route.js`: Routes for authentication (signup and login).
+  - `user.route.js`: Routes for user management (CRUD operations).
 
-## Folder Structure
+- **`/config`**: Configuration files.
+  - `generate-secret.js`: Script to generate a JWT secret key.
 
-- **`/Controllers`**: Contains the business logic for handling user-related requests.
-  - **`user.controller.js`**: Functions for managing user operations such as retrieving, creating, updating, and deleting users.
+- **`.env`**: Environment variables file for storing sensitive information.
 
-- **`/Models`**: Contains Mongoose schema definitions and models for interacting with MongoDB.
-  - **`user.models.js`**: Defines the Mongoose schema for the User collection, including fields like `email`, `password`, `name`, and `gender`.
+- **`package.json`**: Lists project dependencies and scripts.
 
-- **`/Routes`**: Contains route definitions for the API endpoints.
-  - **`user.route.js`**: Maps HTTP requests to controller functions for user operations.
-
-- **`package.json`**: Contains metadata about the project, including dependencies and scripts.
-
-- **`README.md`**: This file, providing an overview of the project, installation instructions, and usage details.
-
-- **`app.js`**: The entry point of the application. Sets up the Express server, connects to MongoDB, and configures middleware and routes.
+- **`app.js`**: Entry point for the application. Sets up and starts the server.
 
 ## Installation
 
-To set up and run the project locally, follow these steps:
+1. **Clone the Repository:**
 
-1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/enjoyimkrsnna/User-management-Backend
+   ```
 
-    ```bash
-    git clone https://github.com/enjoyimkrsnna/User-management-Backend.git
-    cd User-management-Backend
-    ```
+2. **Navigate to the Project Directory:**
 
-2. **Install Dependencies**
+   ```bash
+   cd your-repo-name
+   ```
 
-    ```bash
-    npm install
-    ```
+3. **Install Dependencies:**
 
-3. **Start the Application**
+   ```bash
+   npm install
+   ```
 
-    ```bash
-    npm start
-    ```
+4. **Set Up Environment Variables:**
 
-    The server will start on port 3000 by default. You can change this in the `app.js` file if needed.
+   Create a `.env` file in the root directory with the following content:
+
+   ```env
+   JWT_SECRET=your_generated_secret_key
+   ```
+
+   Replace `your_generated_secret_key` with the key generated using the script below.
+
+5. **Generate a JWT Secret Key:**
+
+   Create a file `/config/generate-secret.js` with the following content:
+
+   ```javascript
+   const crypto = require('crypto');
+   const secret = crypto.randomBytes(64).toString('hex');
+   console.log('Generated Secret Key:', secret);
+   ```
+
+   Run the script to generate the secret key:
+
+   ```bash
+   node /config/generate-secret.js
+   ```
+
+   Copy the generated key and update the `JWT_SECRET` value in your `.env` file.
+
+6. **Start the Server:**
+
+   ```bash
+   npm start
+   ```
+
+## Usage
+
+- **Base URL:** `http://localhost:3000/api/v1`
+
+### Authentication
+
+1. **Sign Up:**
+
+   **Endpoint:** `/api/v1/auth/signup`  
+   **Method:** POST  
+   **Request Body:**
+
+   ```json
+   {
+     "email": "user@example.com",
+     "password": "password123",
+     "name": "John Doe",
+     "gender": "male"
+   }
+   ```
+
+   **Response:**
+
+   ```json
+   {
+     "message": "User created successfully"
+   }
+   ```
+
+2. **Log In:**
+
+   **Endpoint:** `/api/v1/auth/login`  
+   **Method:** POST  
+   **Request Body:**
+
+   ```json
+   {
+     "email": "user@example.com",
+     "password": "password123"
+   }
+   ```
+
+   **Response:**
+
+   ```json
+   {
+     "token": "your_jwt_token_here"
+   }
+   ```
+
+   Use the returned token for authenticating requests to protected routes.
 
 ## API Endpoints
 
-- **Get All Users**
+### User Routes (Protected)
 
-    ```http
-    GET /api/v1/users
-    ```
+1. **Get All Users:**
 
-- **Get Single User**
+   **Endpoint:** `/api/v1/users`  
+   **Method:** GET  
+   **Headers:**
 
-    ```http
-    GET /api/v1/users/:id
-    ```
+   ```http
+   Authorization: Bearer your_jwt_token_here
+   ```
 
-- **Create User**
+   **Response:**
 
-    ```http
-    POST /api/v1/users
-    ```
+   ```json
+   [
+     {
+       "email": "user@example.com",
+       "name": "John Doe",
+       "gender": "male"
+     },
+     ...
+   ]
+   ```
 
-    **Request Body:**
+2. **Get Single User:**
 
-    ```json
-    {
-        "email": "user@example.com",
-        "password": "password123",
-        "name": "John Doe",
-        "gender": "male"
-    }
-    ```
+   **Endpoint:** `/api/v1/users/:id`  
+   **Method:** GET  
+   **Headers:**
 
-- **Update User**
+   ```http
+   Authorization: Bearer your_jwt_token_here
+   ```
 
-    ```http
-    PUT /api/v1/users/:id
-    ```
+   **Response:**
 
-    **Request Body:**
+   ```json
+   {
+     "email": "user@example.com",
+     "name": "John Doe",
+     "gender": "male"
+   }
+   ```
 
-    ```json
-    {
-        "email": "newuser@example.com",
-        "password": "newpassword123",
-        "name": "John Smith",
-        "gender": "male"
-    }
-    ```
+3. **Update User:**
 
-- **Delete User**
+   **Endpoint:** `/api/v1/users/:id`  
+   **Method:** PUT  
+   **Headers:**
 
-    ```http
-    DELETE /api/v1/users/:id
-    ```
+   ```http
+   Authorization: Bearer your_jwt_token_here
+   ```
+
+   **Request Body:**
+
+   ```json
+   {
+     "name": "Jane Doe",
+     "gender": "female"
+   }
+   ```
+
+   **Response:**
+
+   ```json
+   {
+     "email": "user@example.com",
+     "name": "Jane Doe",
+     "gender": "female"
+   }
+   ```
+
+4. **Delete User:**
+
+   **Endpoint:** `/api/v1/users/:id`  
+   **Method:** DELETE  
+   **Headers:**
+
+   ```http
+   Authorization: Bearer your_jwt_token_here
+   ```
+
+   **Response:**
+
+   ```json
+   {
+     "message": "User deleted successfully"
+   }
+   ```
+
+## Environment Variables
+
+- `JWT_SECRET`: The secret key used for signing JWT tokens. Generated using the provided script.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+This `README.md` provides a complete guide to setting up and using your CRUD application with JWT authentication.
