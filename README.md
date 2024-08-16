@@ -38,7 +38,7 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
 2. **Navigate to the Project Directory:**
 
    ```bash
-   cd your-repo-name
+   cd User-management-Backend
    ```
 
 3. **Install Dependencies:**
@@ -77,9 +77,13 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
 
 6. **Start the Server:**
 
+   By default, the server runs on port `3000`. You can start the server using:
+
    ```bash
    npm start
    ```
+
+   The application will be accessible at `http://localhost:3000`.
 
 ## Usage
 
@@ -125,10 +129,8 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
 
    **Response:**
 
-   ```json
-   {
-     "token": "your_jwt_token_here"
-   }
+   ```
+   your_jwt_token_here
    ```
 
    Use the returned token for authenticating requests to protected routes.
@@ -230,11 +232,3 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
 ## Environment Variables
 
 - `JWT_SECRET`: The secret key used for signing JWT tokens. Generated using the provided script.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-This `README.md` provides a complete guide to setting up and using your CRUD application with JWT authentication.
