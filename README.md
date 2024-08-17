@@ -314,3 +314,5 @@ CMD ["npm", "start"]
 ## Environment Variables
 
 - `JWT_SECRET`: The secret key used for signing JWT tokens. Generated using the provided script.
+
+  
