@@ -8,6 +8,7 @@ const authRoute = require("./Routes/auth.route");
 
 const userRoute = require("./Routes/user.route")
 const mailRoute = require("./Routes/mail.routes.js")
+const planRoute = require('./Routes/plan.routes.js');
 const app = express();
 
 //middleware
@@ -15,8 +16,9 @@ app.use(express.json());
 
 //routes
 app.use('/api/v1/mail',mailRoute);
-app.use("/api/v1/auth", authRoute); 
+app.use("/api/v1/auth",authRoute); 
 app.use("/api/v1/users",userRoute);
+app.use('/api/v1/plans',planRoute);
 
 
 

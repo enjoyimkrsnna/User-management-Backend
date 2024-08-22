@@ -1,6 +1,6 @@
-# CRUD Application with JWT Authentication and Docker
+# Investment Plan Management System with JWT Authentication and Docker
 
-This project is a CRUD application built using Node.js, Express, and MongoDB, with JWT authentication to secure user-related endpoints. Docker is used to containerize the application for easy deployment.
+This project is a comprehensive CRUD application that manages user investment plans, with JWT authentication to secure user-related endpoints. Docker is used to containerize the application for easy deployment.
 
 ## Project Structure
 
@@ -8,17 +8,20 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
   - `auth.controller.js`: Handles user signup and login.
   - `user.controller.js`: Manages CRUD operations for users.
   - `mail.controller.js`: Handles OTP generation and password change.
+  - `plan.controller.js`: Manages investment plans (create and get ROI).
 
 - **`/Middleware`**: Contains middleware functions.
   - `auth.middleware.js`: Middleware to authenticate requests using JWT.
 
 - **`/Models`**: Contains Mongoose models for database schemas.
   - `user.models.js`: Defines the User schema and methods.
+  - `plan.models.js`: Defines the Plan schema and methods.
 
 - **`/Routes`**: Contains route definitions.
   - `auth.route.js`: Routes for authentication (signup and login).
   - `user.route.js`: Routes for user management (CRUD operations).
   - `mail.route.js`: Routes for OTP requests and password changes.
+  - `plan.route.js`: Routes for investment plans (create and get ROI).
 
 - **`/config`**: Configuration files.
   - `generate-secret.js`: Script to generate a JWT secret key.
@@ -175,192 +178,37 @@ CMD ["npm", "start"]
 
 ### Authentication
 
-1. **Sign Up:**
-
-   **Endpoint:** `/api/v1/auth/signup`  
-   **Method:** POST  
-   **Request Body:**
-
-   ```json
-   {
-     "email": "user@example.com",
-     "password": "password123",
-     "name": "John Doe",
-     "gender": "male"
-   }
-   ```
-
-   **Response:**
-
-   ```json
-   {
-     "message": "User created successfully"
-   }
-   ```
-
-2. **Log In:**
-
-   **Endpoint:** `/api/v1/auth/login`  
-   **Method:** POST  
-   **Request Body:**
-
-   ```json
-   {
-     "email": "user@example.com",
-     "password": "password123"
-   }
-   ```
-
-   **Response:**
-
-   ```json
-   {
-     "token": "your_jwt_token_here"
-   }
-   ```
-
-   Use the returned token for authenticating requests to protected routes.
+| **Endpoint**       | **Method** | **Request Body**                                                                                   | **Response**                           |
+|--------------------|------------|----------------------------------------------------------------------------------------------------|----------------------------------------|
+| `/api/v1/auth/signup` | POST       | `{ "email": "user@example.com", "password": "password123", "name": "John Doe", "gender": "male" }` | `{ "message": "User created successfully" }` |
+| `/api/v1/auth/login`  | POST       | `{ "email": "user@example.com", "password": "password123" }`                                      | `{ "token": "your_jwt_token_here" }`  |
 
 ### Password Management
 
-1. **Request OTP:**
+| **Endpoint**               | **Method** | **Request Body**                                                | **Response**                               |
+|----------------------------|------------|-----------------------------------------------------------------|--------------------------------------------|
+| `/api/v1/mail/request-otp` | GET        | `{ "email": "user@example.com" }`                                | `{ "message": "OTP sent to your email" }` |
+| `/api/v1/mail/change-password` | PUT     | `{ "email": "user@example.com", "otp": "123456", "newPassword": "newpassword123" }` | `{ "message": "Password updated successfully" }` |
 
-   **Endpoint:** `/api/v1/mail/request-otp`  
-   **Method:** GET  
-   **Request Body:**
+### User Management (Protected)
 
-   ```json
-   {
-     "email": "user@example.com"
-   }
-   ```
+| **Endpoint**                | **Method** | **Request Headers**                                    | **Request Body**                    | **Response**                                |
+|-----------------------------|------------|--------------------------------------------------------|-------------------------------------|---------------------------------------------|
+| `/api/v1/users`             | GET        | `Authorization: Bearer your_jwt_token_here`            | N/A                                 | `[ { "email": "user@example.com", "name": "John Doe", "gender": "male" }, ... ]` |
+| `/api/v1/users/:id`         | GET        | `Authorization: Bearer your_jwt_token_here`            | N/A                                 | `{ "email": "user@example.com", "name": "John Doe", "gender": "male" }` |
+| `/api/v1/users/:id`         | PUT        | `Authorization: Bearer your_jwt_token_here`            | `{ "name": "Jane Doe", "gender": "female" }` | `{ "email": "user@example.com", "name": "Jane Doe", "gender": "female" }` |
+| `/api/v1/users/:id`         | DELETE     | `Authorization: Bearer your_jwt_token_here`            | N/A                                 | `{ "message": "User deleted successfully" }` |
 
-   **Response:**
+### Investment Plans (Protected)
 
-   ```json
-   {
-     "message": "OTP sent to your email"
-   }
-   ```
-
-2. **Change Password:**
-
-   **Endpoint:** `/api/v1/mail/change-password`  
-   **Method:** PUT  
-   **Request Body:**
-
-   ```json
-   {
-     "email": "user@example.com",
-     "otp": "123456",
-     "newPassword": "newpassword123"
-   }
-   ```
-
-   **Response:**
-
-   ```json
-   {
-     "message": "Password updated successfully"
-   }
-   ```
-
-## API Endpoints
-
-### User Routes (Protected)
-
-1. **Get All Users:**
-
-   **Endpoint:** `/api/v1/users`  
-   **Method:** GET  
-   **Headers:**
-
-   ```http
-   Authorization: Bearer your_jwt_token_here
-   ```
-
-   **Response:**
-
-   ```json
-   [
-     {
-       "email": "user@example.com",
-       "name": "John Doe",
-       "gender": "male"
-     },
-     ...
-   ]
-   ```
-
-2. **Get Single User:**
-
-   **Endpoint:** `/api/v1/users/:id`  
-   **Method:** GET  
-   **Headers:**
-
-   ```http
-   Authorization: Bearer your_jwt_token_here
-   ```
-
-   **Response:**
-
-   ```json
-   {
-     "email": "user@example.com",
-     "name": "John Doe",
-     "gender": "male"
-   }
-   ```
-
-3. **Update User:**
-
-   **Endpoint:** `/api/v1/users/:id`  
-   **Method:** PUT  
-   **Headers:**
-
-   ```http
-   Authorization: Bearer your_jwt_token_here
-   ```
-
-   **Request Body:**
-
-   ```json
-   {
-     "name": "Jane Doe",
-     "gender": "female"
-   }
-   ```
-
-   **Response:**
-
-   ```json
-   {
-     "email": "user@example.com",
-     "name": "Jane Doe",
-     "gender": "female"
-   }
-   ```
-
-4. **Delete User:**
-
-   **Endpoint:** `/api/v1/users/:id`  
-   **Method:** DELETE  
-   **Headers:**
-
-   ```http
-   Authorization: Bearer your_jwt_token_here
-   ```
-
-   **Response:**
-
-   ```json
-   {
-     "message": "User deleted successfully"
-   }
-   ```
+| **Endpoint**                | **Method** | **Request Headers**                                    | **Request Body**                                          | **Response**                                 |
+|-----------------------------|------------|--------------------------------------------------------|-----------------------------------------------------------|----------------------------------------------|
+| `/api/v1/plans/createPlan`  | POST       | `Authorization: Bearer your_jwt_token_here`            | `{ "userId": "user_id", "investmentAmount": 1000, "investmentDays": 30, "roi": 5, "planStartDate": "01/01/2024" }` | `{ "message": "Plan created successfully", "plan": plan_details }` |
+| `/api/v1/plans/roi/:userId` | GET        | `Authorization: Bearer your_jwt_token_here`            | N/A                                                       | `{ "roiDetails": [ { "planId": "plan_id", "investmentAmount": 1000, "investmentDays": 30, "planStartDate": "01/01/2024", "planExpiryDate": "01/31/2024", "roi": "5.00", "returnAmount": "1050.00" }, ... ] }` |
 
 ## Environment Variables
 
 - `JWT_SECRET`: The secret key used for signing JWT tokens. Generated using the provided script.
 - `SENDER_EMAIL`: Email address used for sending OTP and password reset emails.
 - `SENDER_PASSWORD`: Password for the sender email account.
+
