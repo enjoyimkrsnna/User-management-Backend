@@ -1,7 +1,6 @@
 const User = require("../Models/user.models");
 
 const getUsers  = async (req,res)=>{
-
     try{
         const user =  await User.find({});
         res.status(200).json(user); 
@@ -40,13 +39,18 @@ const getSingleUser = async (req,res) =>{
 const updateUser = async(req,res)=>{
     
     try{
+        
+        const { email, password, ...updates } = req.body;
 
-        const user =  await User.findByIdAndUpdate(req.params.id,req.body);
-        if(!user)
-        {
-             return res.status(404).json({"message":"User not found"});
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+
+            return res.status(404).json({ message: "User not found" });
         }
-        const updatedUser = await User.findById(req.params.id);
+
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, updates, { new: true });
+        
         res.status(200).json(updatedUser);
  
      }catch(error)

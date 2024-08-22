@@ -7,6 +7,7 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
 - **`/Controllers`**: Contains the logic for handling requests and responses.
   - `auth.controller.js`: Handles user signup and login.
   - `user.controller.js`: Manages CRUD operations for users.
+  - `mail.controller.js`: Handles OTP generation and password change.
 
 - **`/Middleware`**: Contains middleware functions.
   - `auth.middleware.js`: Middleware to authenticate requests using JWT.
@@ -17,6 +18,7 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
 - **`/Routes`**: Contains route definitions.
   - `auth.route.js`: Routes for authentication (signup and login).
   - `user.route.js`: Routes for user management (CRUD operations).
+  - `mail.route.js`: Routes for OTP requests and password changes.
 
 - **`/config`**: Configuration files.
   - `generate-secret.js`: Script to generate a JWT secret key.
@@ -55,9 +57,11 @@ This project is a CRUD application built using Node.js, Express, and MongoDB, wi
 
    ```env
    JWT_SECRET=your_generated_secret_key
+   SENDER_EMAIL=your_email@gmail.com
+   SENDER_PASSWORD=your_email_password
    ```
 
-   Replace `your_generated_secret_key` with the key generated using the script below.
+   Replace `your_generated_secret_key`, `your_email@gmail.com`, and `your_email_password` with the appropriate values.
 
 5. **Generate a JWT Secret Key:**
 
@@ -217,6 +221,50 @@ CMD ["npm", "start"]
 
    Use the returned token for authenticating requests to protected routes.
 
+### Password Management
+
+1. **Request OTP:**
+
+   **Endpoint:** `/api/v1/mail/request-otp`  
+   **Method:** GET  
+   **Request Body:**
+
+   ```json
+   {
+     "email": "user@example.com"
+   }
+   ```
+
+   **Response:**
+
+   ```json
+   {
+     "message": "OTP sent to your email"
+   }
+   ```
+
+2. **Change Password:**
+
+   **Endpoint:** `/api/v1/mail/change-password`  
+   **Method:** PUT  
+   **Request Body:**
+
+   ```json
+   {
+     "email": "user@example.com",
+     "otp": "123456",
+     "newPassword": "newpassword123"
+   }
+   ```
+
+   **Response:**
+
+   ```json
+   {
+     "message": "Password updated successfully"
+   }
+   ```
+
 ## API Endpoints
 
 ### User Routes (Protected)
@@ -314,5 +362,5 @@ CMD ["npm", "start"]
 ## Environment Variables
 
 - `JWT_SECRET`: The secret key used for signing JWT tokens. Generated using the provided script.
-
-  
+- `SENDER_EMAIL`: Email address used for sending OTP and password reset emails.
+- `SENDER_PASSWORD`: Password for the sender email account.
