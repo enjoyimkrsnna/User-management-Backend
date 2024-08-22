@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+
 const User = require("../Models/user.models.js"); 
 
 
@@ -19,11 +20,25 @@ const sendOTPEmail = async (email, otp) => {
         from: process.env.SENDER_EMAIL,
         to: email,
         subject: 'Your Password Reset OTP',
-        text: `Your OTP for password reset is: ${otp}`
+        html: `
+            <html>
+                <body>
+                    <h1>Password Reset Request</h1>
+                    <p>Hi there,</p>
+                    <p>We received a request to reset your password. Please use the following One-Time Password (OTP) to proceed with the password reset:</p>
+                    <h2 style="font-size: 24px; color: #007BFF;">${otp}</h2>
+                    <p>This OTP is valid for the next 10 minutes. For your security, please do not share it with anyone.</p>
+                    <p>If you did not request this, please ignore this email or contact our support team.</p>
+                    <p>Best regards,</p>
+                    <p>Team Webito </p>
+                </body>
+            </html>
+        `
     };
 
     await transporter.sendMail(mailOptions);
 };
+
 
 //request for otp
 const requestOTP = async (req, res) => {
