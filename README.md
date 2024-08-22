@@ -174,37 +174,37 @@ CMD ["npm", "start"]
 
 ## Usage
 
-- **Base URL:** `http://localhost:3000/api/v1`
+- **Base URL:** `http://localhost:3000`
 
 ### Authentication
 
 | **Endpoint**       | **Method** | **Request Body**                                                                                   | **Response**                           |
 |--------------------|------------|----------------------------------------------------------------------------------------------------|----------------------------------------|
-| `/api/v1/auth/signup` | POST       | `{ "email": "user@example.com", "password": "password123", "name": "John Doe", "gender": "male" }` | `{ "message": "User created successfully" }` |
-| `/api/v1/auth/login`  | POST       | `{ "email": "user@example.com", "password": "password123" }`                                      | `{ "token": "your_jwt_token_here" }`  |
+| `/api/v1/auth/signup` | POST       | `{ "email": "user@example.com", "password": "password", "name": "User Name", "gender": "gender" }` | `{ "message": "User created successfully" }` |
+| `/api/v1/auth/login`  | POST       | `{ "email": "user@example.com", "password": "password" }`                                      | `{ "token": "your_jwt_token_here" }`  |
 
 ### Password Management
 
 | **Endpoint**               | **Method** | **Request Body**                                                | **Response**                               |
 |----------------------------|------------|-----------------------------------------------------------------|--------------------------------------------|
 | `/api/v1/mail/request-otp` | GET        | `{ "email": "user@example.com" }`                                | `{ "message": "OTP sent to your email" }` |
-| `/api/v1/mail/change-password` | PUT     | `{ "email": "user@example.com", "otp": "123456", "newPassword": "newpassword123" }` | `{ "message": "Password updated successfully" }` |
+| `/api/v1/mail/change-password` | PUT     | `{ "email": "user@example.com", "otp": "otp_code", "newPassword": "new_password" }` | `{ "message": "Password updated successfully" }` |
 
 ### User Management (Protected)
 
 | **Endpoint**                | **Method** | **Request Headers**                                    | **Request Body**                    | **Response**                                |
 |-----------------------------|------------|--------------------------------------------------------|-------------------------------------|---------------------------------------------|
-| `/api/v1/users`             | GET        | `Authorization: Bearer your_jwt_token_here`            | N/A                                 | `[ { "email": "user@example.com", "name": "John Doe", "gender": "male" }, ... ]` |
-| `/api/v1/users/:id`         | GET        | `Authorization: Bearer your_jwt_token_here`            | N/A                                 | `{ "email": "user@example.com", "name": "John Doe", "gender": "male" }` |
-| `/api/v1/users/:id`         | PUT        | `Authorization: Bearer your_jwt_token_here`            | `{ "name": "Jane Doe", "gender": "female" }` | `{ "email": "user@example.com", "name": "Jane Doe", "gender": "female" }` |
+| `/api/v1/users`             | GET        | `Authorization: Bearer your_jwt_token_here`            | N/A                                 | `[ { "email": "user@example.com", "name": "User Name", "gender": "gender" }, ... ]` |
+| `/api/v1/users/:id`         | GET        | `Authorization: Bearer your_jwt_token_here`            | N/A                                 | `{ "email": "user@example.com", "name": "User Name", "gender": "gender" }` |
+| `/api/v1/users/:id`         | PUT        | `Authorization: Bearer your_jwt_token_here`            | `{ "name": "New Name", "gender": "new_gender" }` | `{ "email": "user@example.com", "name": "New Name", "gender": "new_gender" }` |
 | `/api/v1/users/:id`         | DELETE     | `Authorization: Bearer your_jwt_token_here`            | N/A                                 | `{ "message": "User deleted successfully" }` |
 
 ### Investment Plans (Protected)
 
 | **Endpoint**                | **Method** | **Request Headers**                                    | **Request Body**                                          | **Response**                                 |
 |-----------------------------|------------|--------------------------------------------------------|-----------------------------------------------------------|----------------------------------------------|
-| `/api/v1/plans/createPlan`  | POST       | `Authorization: Bearer your_jwt_token_here`            | `{ "userId": "user_id", "investmentAmount": 1000, "investmentDays": 30, "roi": 5, "planStartDate": "01/01/2024" }` | `{ "message": "Plan created successfully", "plan": plan_details }` |
-| `/api/v1/plans/roi/:userId` | GET        | `Authorization: Bearer your_jwt_token_here`            | N/A                                                       | `{ "roiDetails": [ { "planId": "plan_id", "investmentAmount": 1000, "investmentDays": 30, "planStartDate": "01/01/2024", "planExpiryDate": "01/31/2024", "roi": "5.00", "returnAmount": "1050.00" }, ... ] }` |
+| `/api/v1/plans/createPlan`  | POST       | `Authorization: Bearer your_jwt_token_here`            | `{ "userId": "user_id", "investmentAmount": amount, "investmentDays": days, "roi": roi, "planStartDate": "start_date" }` | `{ "message": "Plan created successfully", "plan": plan_details }` |
+| `/api/v1/plans/roi/:userId` | GET        | `Authorization: Bearer your_jwt_token_here`            | N/A                                                       | `{ "roiDetails": [ { "planId": "plan_id", "investmentAmount": amount, "investmentDays": days, "planStartDate": "start_date", "planExpiryDate": "expiry_date", "roi": roi, "returnAmount": return_amount }, ... ] }` |
 
 ## Environment Variables
 

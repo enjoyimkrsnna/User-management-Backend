@@ -21,7 +21,7 @@ const createPlan = async (req, res) => {
     
         // Calculate planExpiryDate based on investmentDays
         const planExpiryDate = new Date(startDate);
-        planExpiryDate.setDate(planExpiryDate.getDate() + investmentDays); // Add the number of days
+        planExpiryDate.setDate(planExpiryDate.getDate() + investmentDays);
     
         const plan = new Plan({
           userId,
