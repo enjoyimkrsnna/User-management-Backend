@@ -212,3 +212,15 @@ CMD ["npm", "start"]
 - `SENDER_EMAIL`: Email address used for sending OTP and password reset emails.
 - `SENDER_PASSWORD`: Password for the sender email account.
 
+## Some screenshots
+
+![send email](https://github.com/user-attachments/assets/45c105df-fccb-420c-814e-2c60cd59c725)
+![image](https://github.com/user-attachments/assets/ea4f955b-9c98-487d-8d6b-57e20e5705f7)
+![image](https://github.com/user-attachments/assets/78ea29d5-b43e-475d-a2b0-abeddc9dcc4c)
+![image](https://github.com/user-attachments/assets/14237c86-5ab9-4049-b5d1-3755d9f747c9)
+![image](https://github.com/user-attachments/assets/f3c4eee0-2790-4891-88dd-aa976094a7c3)
+
+
+
+
+
