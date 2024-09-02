@@ -1,4 +1,5 @@
 const Plan = require('../Models/plan.models');
+const Transaction = require('../Models/transaction.models')
 
 // Create a new plan
 const createPlan = async (req, res) => {
@@ -43,40 +44,52 @@ const createPlan = async (req, res) => {
 
 // Get ROI for a specific user's investment in a plan
 const getUserPlanROI = async (req, res) => {
-    const { userId } = req.params;
-    try {
+  const { userId } = req.params;
+  try {
       const plans = await Plan.find({ userId });
-  
+      
       if (!plans.length) return res.status(404).json({ message: 'No plans found for this user' });
-  
+
       const roiDetails = plans.map(plan => {
-       
-        const returnAmount = plan.investmentAmount * (1 + plan.roi / 100);
-        const roi = ((returnAmount - plan.investmentAmount) / plan.investmentAmount) * 100;
-  
-        // Format dates
-        const formatDate = (date) => new Date(date).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-  
-        return {
-          planId: plan._id,
-          investmentAmount: plan.investmentAmount,
-          investmentDays: plan.investmentDays,
-          planStartDate: formatDate(plan.planStartDate),
-          planExpiryDate: formatDate(plan.planExpiryDate),
-          roi: roi.toFixed(2), 
-          returnAmount: returnAmount.toFixed(2) 
-        };
+         
+          const days = (new Date(plan.planExpiryDate) - new Date(plan.planStartDate)) / (1000 * 60 * 60 * 24);
+
+          
+          const annualROI = plan.roi / 100;
+          const dailyROI = annualROI / 365;
+          const totalROI = dailyROI * days;
+          
+          // Calculate return amount
+          const returnAmount = plan.investmentAmount * (1 + totalROI);
+          const roi = (totalROI * 100);
+
+          // Format dates
+          const formatDate = (date) => new Date(date).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit'
+          });
+
+          return {
+              planId: plan._id,
+              investmentAmount: plan.investmentAmount,
+              investmentDays: days,
+              planStartDate: formatDate(plan.planStartDate),
+              planExpiryDate: formatDate(plan.planExpiryDate),
+              roi: roi.toFixed(2), 
+              returnAmount: returnAmount.toFixed(2)
+          };
       });
-  
+
       res.status(200).json({ roiDetails });
-    } catch (error) {
+  } catch (error) {
       res.status(400).json({ error: error.message });
-    }
+  }
 };
+
+
+
+
 
 
 module.exports = {

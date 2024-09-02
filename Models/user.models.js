@@ -24,7 +24,11 @@ const UserSchema = mongoose.Schema(
             required: false
         },
         otp: String,
-        otpExpires: Date 
+        otpExpires: Date ,
+        totalBalance: {
+            type: Number,
+            default: 0
+        }
     }
 );
 
